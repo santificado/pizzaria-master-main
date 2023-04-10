@@ -7,6 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController
@@ -27,7 +32,7 @@ public class ContaController {
     }
 
     @PostMapping
-    public Conta createUser(@RequestBody Conta conta) {
+    public Conta createUser(@RequestBody @Valid Conta conta) {
         return userRepository.save(conta);
     }
 
@@ -48,5 +53,10 @@ public class ContaController {
     public void deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);
     }
-}
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleException(javax.validation.ConstraintViolationException exception) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+}

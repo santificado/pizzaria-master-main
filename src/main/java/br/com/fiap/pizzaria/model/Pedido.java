@@ -1,18 +1,32 @@
 package br.com.fiap.pizzaria.model;
 
-import java.math.BigDecimal;
+import br.com.fiap.pizzaria.model.Pedido;
+import br.com.fiap.pizzaria.repositories.PedidoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-public class Pedido {
- 
-    public String Nome;
+import java.util.List;
 
-    public Enum Tamanho;
+public class Conta {
 
-    public BigDecimal Preco;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Boolean Entrega;
+    @Column(nullable = false)
+    private String nome;
 
-    public String Observacao;
+    @Column(nullable = false)
+    private String endereco;
+
+    @Column(nullable = false)
+    private BigDecimal telefone;
+
+
+
 
     public String getNome() {
         return Nome;

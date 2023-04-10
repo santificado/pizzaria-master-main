@@ -42,6 +42,21 @@
 		<artifactId>h2</artifactId>
 		<scope>runtime</scope>
 	</dependency>
+	<!-- Maven -->
+	<dependency>
+		<groupId>javax.validation</groupId>
+		<artifactId>validation-api</artifactId>
+		<version>2.0.1.Final</version>
+	</dependency>
+	<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.18.4</version>
+		<scope>provided</scope>
+	</dependency>
+
+	<!-- Gradle -->
+	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 
 	<dependency>
 		<groupId>javax.validation</groupId>

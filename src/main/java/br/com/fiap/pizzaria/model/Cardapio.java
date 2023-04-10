@@ -4,13 +4,29 @@ import java.math.BigDecimal;
 
 public class Cardapio {
 
-    public String Nome;
+    @Data
+    @Entity
+    public class Cardapio {
 
-    public static Enum Tamanho;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    public BigDecimal Preco;
+        private String nome;
 
-    public static BigDecimal Id;
+        @Enumerated(EnumType.STRING)
+        private Tamanho tamanho;
+
+        private BigDecimal preco;
+
+        //getters e setters
+
+        public enum Tamanho {
+            PEQUENA, MEDIA, GRANDE
+        }
+
+    }
+
 
     public String getNome() {
         return Nome;
