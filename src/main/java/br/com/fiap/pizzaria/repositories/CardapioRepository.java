@@ -8,7 +8,7 @@ import java.util.Optional;
 @Repository
 public interface CardapioRepository extends CrudRepository<Cardapio, Long> {
 
-    Iterable<Cardapio> findAll();
+    Iterable<Cardapio> findAll(Pageable pageable);
 
     Optional<Object> findById(Long id);
 

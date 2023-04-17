@@ -3,16 +3,17 @@ package br.com.fiap.pizzaria.controller;
 import br.com.fiap.pizzaria.model.Conta;
 import br.com.fiap.pizzaria.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/conta")
@@ -21,21 +22,21 @@ public class ContaController {
     private UserRepository userRepository;
 
     @GetMapping
-    public List<Conta> getUsers() {
-        return userRepository.findAll();
+    public Page<Conta> getUsers(@RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "10") int size,
+                                @RequestParam(defaultValue = "id") String sortBy) {
+        return userRepository.findAll(PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
     @GetMapping("/{id}")
-    public Conta getUserById(@PathVariable Long id) {
-        return (Conta) userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conta não encontrada"));
+    public Optional<Object> getUserById(@PathVariable Long id) {
+        return userRepository.findById(id);
     }
 
     @PostMapping
     public Conta createUser(@RequestBody @Valid Conta conta) {
         return userRepository.save(conta);
     }
-
 
     @PutMapping("/{id}")
     public Conta updateUser(@PathVariable Long id, @RequestBody @Validated Conta updatedUser) {
@@ -54,9 +55,22 @@ public class ContaController {
         userRepository.deleteById(id);
     }
 
+    @GetMapping("/search")
+    public List<Conta> searchUsers(@RequestParam(required = false) String nome,
+                                   @RequestParam(required = false) String endereco,
+                                   @RequestParam(required = false) String telefone) {
+        return userRepository.findAll();
+    }
+
+    @GetMapping("/sorted")
+    public List<Conta> getUsersSorted(@RequestParam(defaultValue = "id") String sortBy) {
+        return userRepository.findAll(Sort.by(sortBy));
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleException(javax.validation.ConstraintViolationException exception) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+    public void handleException(javax.validation.ConstraintViolationException exception) throws ResponseStatusException {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                exception.getMessage());
     }
 }

@@ -1,14 +1,8 @@
-
-
-
 package br.com.fiap.pizzaria.model;
-import java.math.BigDecimal;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,9 +24,8 @@ public class Conta {
     private BigDecimal telefone;
 
     @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
-    private List<Pedido> pedidos;
+    private List<Conta> pedidos;
 
-}
 
     public String getNome() {
         return Nome;
@@ -66,5 +59,6 @@ public class Conta {
         Id = id;
     }
 
-    
+}
+
 }

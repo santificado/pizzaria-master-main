@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface PedidoRepository extends CrudRepository<Pedido, Long> {
     Optional<Object> findById(Long id);
 
-    List<Pedido> findAll();
+    List<Pedido> findAll(Pageable pageable);
 
     Pedido save(Pedido pedido);
 

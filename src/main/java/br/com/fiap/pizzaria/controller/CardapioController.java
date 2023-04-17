@@ -1,8 +1,10 @@
 package br.com.fiap.pizzaria.controller;
 
-import br.com.fiap.pizzaria.repositories.CardapioRepository;
 import br.com.fiap.pizzaria.model.Cardapio;
+import br.com.fiap.pizzaria.repositories.CardapioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +30,16 @@ public class CardapioController {
         return cardapioRepository.save(cardapio);
     }
 
-    // outros métodos omitidos
+    @GetMapping
+    public Iterable<Cardapio> getPizzas(Pageable pageable) {
+        return cardapioRepository.findAll(pageable);
+    }
 
 
+    @GetMapping("/ordenacao")
+    public Page<Cardapio> getPizzasOrdenadasPorPreco(Pageable pageable) {
+        return cardapioRepository.findAllByOrderByPrecoAsc(pageable);
+    }
 
     @DeleteMapping("/{id}")
     public void deletarPizza(@PathVariable Long id) {

@@ -3,6 +3,7 @@ package br.com.fiap.pizzaria.controller;
 import br.com.fiap.pizzaria.model.Pedido;
 import br.com.fiap.pizzaria.repositories.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,10 @@ import java.util.List;
 class ClienteController {
     @Autowired
     private PedidoRepository pedidoRepository;
+
     @GetMapping
-    public List<Pedido> getClients() {
-        return pedidoRepository.findAll();
+    public List<Pedido> getClients(Pageable pageable) {
+        return pedidoRepository.findAll(pageable);
     }
 
     @GetMapping("/{id}")
@@ -55,9 +57,10 @@ class ClienteController {
 class OrderController {
     @Autowired
     private PedidoRepository pedidoRepository;
+
     @GetMapping
-    public List<Pedido> getOrders() {
-        return pedidoRepository.findAll();
+    public List<Pedido> getOrders(Pageable pageable) {
+        return pedidoRepository.findAll(pageable);
     }
 
     @GetMapping("/{id}")
