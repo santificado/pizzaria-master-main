@@ -2,7 +2,7 @@ package br.com.fiap.pizzaria.model;
 
 import java.math.BigDecimal;
 
-public class Conta {
+public class Pedido extends Conta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,9 @@ public class Conta {
     @Column(nullable = false)
     private BigDecimal telefone;
 
-
+    public void Conta(Long id) {
+        this.id = id;
+    }
 
 
     public String getNome() {

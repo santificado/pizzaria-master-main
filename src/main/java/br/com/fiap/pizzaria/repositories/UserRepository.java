@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<Conta, Long> {
-    Optional<Object> findById(Long id);
+    Optional<Conta> findById(Long id);
 
     Conta save(Conta conta);
 

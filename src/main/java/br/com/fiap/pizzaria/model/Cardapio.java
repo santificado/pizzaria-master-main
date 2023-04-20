@@ -1,5 +1,8 @@
 package br.com.fiap.pizzaria.model;
 
+import jakarta.persistence.Entity;
+import lombok.Data;
+
 import java.math.BigDecimal;
 
 public class Cardapio {
