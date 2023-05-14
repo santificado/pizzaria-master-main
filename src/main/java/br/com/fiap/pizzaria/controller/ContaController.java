@@ -2,7 +2,6 @@ package br.com.fiap.pizzaria.controller;
 
 import br.com.fiap.pizzaria.model.Conta;
 import br.com.fiap.pizzaria.repositories.UserRepository;
-import jakarta.util.Optional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,8 +12,13 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/conta")
@@ -72,16 +76,10 @@ public class ContaController {
         return entityModel;
     }
 
-    @PostMapping(produces = MediaTypes.HAL_JSON_VALUE, consumes = MediaTypes.HAL_JSON_VALUE)
-    public EntityModel<Conta> createUser(@RequestBody @Valid Conta conta) {
-
-        Conta savedConta = userRepository.save(conta);
-
-        EntityModel<Conta> entityModel = EntityModel.of(savedConta);
-
-        Link selfLink = WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(ContaController.class)
-                        .getUserById(savedConta.getId()))
-
+    @PreAuthorize
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public EntityModel<Optional<Conta>> getUserById(@PathVariable Long id) {
+        // Código do método
     }
 }
