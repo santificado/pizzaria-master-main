@@ -71,4 +71,4 @@ public class CardapioController {
         Page<Cardapio> pizzasPage = cardapioRepository.findAll(pageable);
 
         List<EntityModel<Cardapio>> pizzasModel = pizzasPage.getContent().stream()
-                .map(pizza
+                .map(pizza);
