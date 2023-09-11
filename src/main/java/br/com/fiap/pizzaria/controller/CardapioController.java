@@ -7,9 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,12 +24,13 @@ public class CardapioController {
     @Autowired
     private CardapioRepository cardapioRepository;
 
+
     @PostMapping
-    public EntityModel<Cardapio> criarPizza(@RequestBody @Validated Cardapio cardapio) {
+    public EntityModel<Cardapio> criarPizza(@RequestBody @Validated Long cardapio) {
         Cardapio novaPizza = cardapioRepository.save(cardapio);
 
         EntityModel<Cardapio> pizzaModel = EntityModel.of(novaPizza);
-        Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CardapioController.class).buscarPizza(novaPizza.getId())).withSelfRel();
+        Link selfLink = WebMvcLinkBuilder.linkTo(Objects.requireNonNull(WebMvcLinkBuilder.methodOn(CardapioController.class).buscarPizza(novaPizza.getId()))).withSelfRel();
         pizzaModel.add(selfLink);
 
         return pizzaModel;
@@ -44,24 +44,11 @@ public class CardapioController {
         pizza.setPreco(cardapioAtualizado.getPreco());
         pizza.setTamanho(cardapioAtualizado.getTamanho());
 
-        Cardapio pizzaAtualizada = cardapioRepository.save(pizza);
+        Cardapio pizzaAtualizada = cardapioRepository.save(pizza.getId());
 
         EntityModel<Cardapio> pizzaModel = EntityModel.of(pizzaAtualizada);
-        Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CardapioController.class).buscarPizza(pizzaAtualizada.getId())).withSelfRel();
+        Link selfLink = WebMvcLinkBuilder.linkTo(Objects.requireNonNull(WebMvcLinkBuilder.methodOn(CardapioController.class).buscarPizza(pizzaAtualizada.getId()))).withSelfRel();
         pizzaModel.add(selfLink);
-
-        return pizzaModel;
-    }
-
-    @GetMapping("/{id}")
-    public EntityModel<Cardapio> buscarPizza(@PathVariable Long id) {
-        Cardapio pizza = (Cardapio) cardapioRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        EntityModel<Cardapio> pizzaModel = EntityModel.of(pizza);
-        Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CardapioController.class).buscarPizza(id)).withSelfRel();
-        Link atualizarLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CardapioController.class).atualizarPizza(id, pizza)).withRel("atualizar");
-        Link excluirLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CardapioController.class).deletarPizza(id)).withRel("excluir");
-        pizzaModel.add(selfLink, atualizarLink, excluirLink);
 
         return pizzaModel;
     }
@@ -71,4 +58,25 @@ public class CardapioController {
         Page<Cardapio> pizzasPage = cardapioRepository.findAll(pageable);
 
         List<EntityModel<Cardapio>> pizzasModel = pizzasPage.getContent().stream()
-                .map(pizza);
+                .map(this::createCardapioEntityModel)
+                .collect(Collectors.toList());
+
+        Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CardapioController.class).getPizzas(pageable)).withSelfRel();
+
+        return CollectionModel.of(pizzasModel, selfLink);
+    }
+
+    private EntityModel<Cardapio> createCardapioEntityModel(Cardapio pizza) {
+        Link selfLink = WebMvcLinkBuilder.linkTo(Objects.requireNonNull(WebMvcLinkBuilder.methodOn(CardapioController.class).buscarPizza(pizza.getId()))).withSelfRel();
+        Link atualizarLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CardapioController.class).atualizarPizza(pizza.getId(), pizza)).withRel("atualizar");
+        Link excluirLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CardapioController.class).criarPizza(pizza.getId())).withRel("excluir");
+
+        return EntityModel.of(pizza, selfLink, atualizarLink, excluirLink);
+    }
+
+    private Class<?> buscarPizza(Long id) {
+        return null;
+    }
+
+
+}

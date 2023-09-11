@@ -1,15 +1,22 @@
 package br.com.fiap.pizzaria.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
-public class Cardapio {
 
     @Data
     @Entity
     public class Cardapio {
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,37 +38,8 @@ public class Cardapio {
     }
 
 
-    public String getNome() {
-        return Nome;
-    }
-
-    public void setNome(String nome) {
-        Nome = nome;
-    }
-
-    public Enum getTamanho() {
-        return Tamanho;
-    }
-
-    public static void setTamanho(Enum tamanho) {
-        Tamanho = tamanho;
-    }
-
-    public BigDecimal getPreco() {
-        return Preco;
-    }
-
-    public void setPreco(BigDecimal preco) {
-        Preco = preco;
-    }
-
-    public BigDecimal getID() {
-        return Id;
-    }
-
-    public static void setID() {
-    }
 
 
 
-}
+
+

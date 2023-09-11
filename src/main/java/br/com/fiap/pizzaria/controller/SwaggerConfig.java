@@ -1,4 +1,4 @@
-package br.com.fiap.pizzaria.controller;
+package br.com.fiap.pizzaria.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,18 +29,21 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/swagger-ui.html**")
+        registry.addResourceHandler("/swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/swagger-ui.html");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
+
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("API Documentation")
-                .description("Documentation for the API endpoints")
+                .title("Pizzaria API Documentation")
+                .description("Documentation for the Pizzaria API endpoints")
                 .version("1.0.0")
-                .contact(new Contact("Pizzaria", "https://pizzaria-cp.com"))
+                .contact(new Contact("Pizzeria",
+                        "https://pizzaria-cp.com"))
                 .build();
     }
 }

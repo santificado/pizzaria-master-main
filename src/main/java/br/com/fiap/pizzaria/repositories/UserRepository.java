@@ -1,6 +1,7 @@
 package br.com.fiap.pizzaria.repositories;
 
 import br.com.fiap.pizzaria.model.Conta;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface UserRepository extends CrudRepository<Conta, Long> {
 
     void deleteById(Long id);
 
-    List<Conta> findAll();
+    List<Conta> findAll(PageRequest of);
 }

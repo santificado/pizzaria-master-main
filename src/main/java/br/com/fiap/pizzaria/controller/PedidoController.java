@@ -24,12 +24,12 @@ public class ClienteController {
 
     @GetMapping
     public List<Pedido> getPedidos(Pageable pageable) {
-        return pedidoRepository.findAll(pageable).getContent();
+        return pedidoRepository.findAll((java.awt.print.Pageable) pageable);
     }
 
     @GetMapping("/{id}")
     public EntityModel<Pedido> getPedidoById(@PathVariable Long id) {
-        Pedido pedido = pedidoRepository.findById(id)
+        Pedido pedido = (Pedido) pedidoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
 
         Link selfLink = WebMvcLinkBuilder.linkTo(ClienteController.class)
@@ -45,23 +45,23 @@ public class ClienteController {
         Link selfLink = WebMvcLinkBuilder.linkTo(ClienteController.class)
                 .slash(pedidoCriado.getId()).withSelfRel();
 
-        return pedidoCriado.add(selfLink);
+        return pedidoCriado;
     }
 
     @PutMapping("/{id}")
     public Pedido updatePedido(@PathVariable Long id, @RequestBody @Validated Pedido pedidoAtualizado) {
-        Pedido pedido = pedidoRepository.findById(id)
+        Pedido pedido = (Pedido) pedidoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
 
         pedido.setNome(pedidoAtualizado.getNome());
-        pedido.setEntrega(pedidoAtualizado.getEntrega());
+        pedido.setEndereco(pedidoAtualizado.getEndereco());
 
         pedidoAtualizado = pedidoRepository.save(pedido);
 
         Link selfLink = WebMvcLinkBuilder.linkTo(ClienteController.class)
                 .slash(pedidoAtualizado.getId()).withSelfRel();
 
-        return pedidoAtualizado.add(selfLink);
+        return pedidoAtualizado;
     }
 
     @DeleteMapping("/{id}")

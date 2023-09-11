@@ -4,7 +4,6 @@ import br.com.fiap.pizzaria.model.Conta;
 import br.com.fiap.pizzaria.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityModel;
@@ -12,12 +11,11 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,13 +26,13 @@ public class ContaController {
     private UserRepository userRepository;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    public EntityModel<Page<Conta>> getUsers(@RequestParam(defaultValue = "0") int page,
+    public EntityModel<List<Conta>> getUsers(@RequestParam(defaultValue = "0") int page,
                                              @RequestParam(defaultValue = "10") int size,
                                              @RequestParam(defaultValue = "id") String sortBy) {
 
-        Page<Conta> contas = userRepository.findAll(PageRequest.of(page, size, Sort.by(sortBy)));
+        List<Conta> contas = userRepository.findAll(PageRequest.of(page, size, Sort.by(sortBy)));
 
-        EntityModel<Page<Conta>> entityModel = EntityModel.of(contas);
+        EntityModel<List<Conta>> entityModel = EntityModel.of(contas);
 
         Link selfLink = WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(ContaController.class)
@@ -47,6 +45,11 @@ public class ContaController {
 
         return entityModel;
     }
+
+    private Object createUser(Object o) {
+        return null;
+    }
+
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public EntityModel<Optional<Conta>> getUserById(@PathVariable Long id) {
@@ -76,10 +79,17 @@ public class ContaController {
         return entityModel;
     }
 
-    @PreAuthorize
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public EntityModel<Optional<Conta>> getUserById(@PathVariable Long id) {
-        // Código do método
+    @PutMapping("/{id}")
+    public EntityModel<Conta> updateUser(@PathVariable Long id, @RequestBody @Valid Conta contaAtualizada) {
+        // Implemente a lógica para atualizar a conta
+        // Retorne a conta atualizada com os links apropriados
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    public Method deleteUser(@PathVariable Long id) {
+        // Implemente a lógica para excluir a conta
+        // Não é necessário retornar nada
+        return null;
     }
 }

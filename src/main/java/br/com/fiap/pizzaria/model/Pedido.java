@@ -1,8 +1,23 @@
 package br.com.fiap.pizzaria.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.springframework.data.annotation.Id;
+
 import java.math.BigDecimal;
 
 public class Pedido extends Conta {
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,45 +37,5 @@ public class Pedido extends Conta {
     }
 
 
-    public String getNome() {
-        return Nome;
-    }
 
-    public void setNome(String nome) {
-        Nome = nome;
-    }
-
-    public Enum getTamanho() {
-        return Tamanho;
-    }
-
-    public void setTamanho(Enum tamanho) {
-        Tamanho = tamanho;
-    }
-
-    public BigDecimal getPreco() {
-        return Preco;
-    }
-
-    public void setPreco(BigDecimal preco) {
-        Preco = preco;
-    }
-
-    public Boolean getEntrega() {
-        return Entrega;
-    }
-
-    public void setEntrega(Boolean entrega) {
-        Entrega = entrega;
-    }
-
-    public String getObservacao() {
-        return Observacao;
-    }
-
-    public void setObservacao(String observacao) {
-        Observacao = observacao;
-    }
-
-    
 }

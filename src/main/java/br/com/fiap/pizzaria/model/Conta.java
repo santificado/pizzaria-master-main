@@ -1,5 +1,6 @@
 package br.com.fiap.pizzaria.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,38 +27,6 @@ public class Conta {
     @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
     private List<Conta> pedidos;
 
+     }
 
-    public String getNome() {
-        return Nome;
-    }
-
-    public void setNome(String nome) {
-        Nome = nome;
-    }
-
-    public String getEndereco() {
-        return Endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        Endereco = endereco;
-    }
-
-    public BigDecimal getTelefone() {
-        return Telefone;
-    }
-
-    public void setTelefone(BigDecimal telefone) {
-        Telefone = telefone;
-    }
-
-    public BigDecimal getId() {
-        return Id;
-    }
-
-    public void setID(BigDecimal id) {
-        Id = id;
-    }
-
-}
 
