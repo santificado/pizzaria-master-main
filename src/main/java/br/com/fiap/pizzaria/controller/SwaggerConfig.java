@@ -1,4 +1,4 @@
-package br.com.fiap.pizzaria.config;
+package br.com.fiap.pizzaria.controller;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
